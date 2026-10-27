@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>remoteplayer APT repository</title>
+<style>
+  :root { color-scheme: light dark; --text: #1b1b1b; --muted: #5c5c5c; --background: #ffffff; --code: #f2f2f2; }
+  @media (prefers-color-scheme: dark) { :root { --text: #e8e8e8; --muted: #a8a8a8; --background: #161616; --code: #262626; } }
+  body { margin: 0 auto; max-width: 46rem; padding: 2rem 16px; font: 16px/1.55 system-ui, sans-serif; color: var(--text); background: var(--background); }
+  h1 { font-size: 1.6rem; margin-bottom: .25rem; }
+  p.lead { color: var(--muted); margin-top: 0; }
+  pre { background: var(--code); padding: .9rem 1rem; border-radius: 6px; overflow-x: auto; font-size: .9rem; }
+  code { font-family: ui-monospace, monospace; }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<h1>remoteplayer APT repository</h1>
+<p class="lead">Debian packages for Raspberry Pi OS (bookworm, trixie; <code>arm64</code>, <code>armhf</code>) and Debian/Ubuntu on <code>amd64</code>.</p>
+
+<h2>Add the repository</h2>
+<pre><code>sudo curl -fsSLo /usr/share/keyrings/remoteplayer-archive-keyring.gpg \
+    https://endownment.github.io/remoteplayer-apt/remoteplayer-archive-keyring.gpg
+sudo curl -fsSLo /etc/apt/sources.list.d/remoteplayer.sources \
+    https://endownment.github.io/remoteplayer-apt/remoteplayer.sources
+sudo apt update</code></pre>
+
+<h2>Install</h2>
+<pre><code>sudo apt install remoteplayer-restservice remoteplayer-mpvwatcher</code></pre>
+<p>Then follow the "Installation" section of the
+<a href="https://github.com/endownment/remoteplayer-restservice#installation-on-the-raspberry-pi">remoteplayer-restservice README</a>
+(set the API token, enable the units). Later versions arrive with <code>sudo apt upgrade</code>.</p>
+
+<h2>Packages</h2>
+<ul>
+  <li><a href="https://github.com/endownment/remoteplayer-restservice">remoteplayer-restservice</a>: the REST API and the mpv unit</li>
+  <li><a href="https://github.com/endownment/remoteplayer-mpvwatcher">remoteplayer-mpvwatcher</a>: follows the playback state for restoring it</li>
+</ul>
+<p>Signing key: <a href="remoteplayer-archive-keyring.asc">remoteplayer-archive-keyring.asc</a>. Index: <a href="dists/stable/Release">dists/stable/Release</a>.</p>
+</body>
+</html>

@@ -1,0 +1,73 @@
+# Rebuilds the APT repository from the GitHub releases of the source
+# repositories and publishes it on GitHub Pages.
+#
+# Runs when a source repository releases (repository_dispatch, sent by its
+# release job), once a day as a fallback, on changes here, and by hand.
+
+name: publish
+
+on:
+  repository_dispatch:
+    types: [package-released]
+  schedule:
+    - cron: "17 3 * * *"
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer run waits instead of cancelling a
+# half-finished deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  SOURCE_REPOSITORIES: endownment/remoteplayer-restservice endownment/remoteplayer-mpvwatcher
+  # Older versions stay installable (apt install package=version) for a while.
+  RELEASES_PER_REPOSITORY: "3"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends apt-utils dpkg-dev gnupg xz-utils
+      - name: Download the packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: scripts/download-packages.sh downloads "$RELEASES_PER_REPOSITORY" $SOURCE_REPOSITORIES
+      - name: Import the signing key
+        env:
+          APT_SIGNING_KEY: ${{ secrets.APT_SIGNING_KEY }}
+        run: |
+          if [ -z "$APT_SIGNING_KEY" ]; then
+            echo "::error::the secret APT_SIGNING_KEY is missing (README, \"Setting up\")"
+            exit 1
+          fi
+          printf '%s\n' "$APT_SIGNING_KEY" | gpg --batch --import
+          key_id="$(gpg --list-secret-keys --with-colons | awk -F: '$1 == "fpr" { print $10; exit }')"
+          echo "SIGNING_KEY_ID=$key_id" >> "$GITHUB_ENV"
+      - name: Build the repository
+        run: scripts/build-repository.sh downloads site
+      - name: Check the repository with apt
+        run: scripts/check-repository.sh site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
