@@ -1,5 +1,5 @@
 Types: deb
-URIs: https://endownment.github.io/remoteplayer-apt
+URIs: https://endownment.github.io/endownment-remoteplayer-apt
 Suites: stable
 Components: main
 Signed-By: /usr/share/keyrings/remoteplayer-archive-keyring.gpg
