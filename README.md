@@ -1,7 +1,7 @@
-# endownment-remoteplayer-apt
+# remoteplayer-apt
 
 The APT repository of **remoteplayer**, published on GitHub Pages at
-<https://endownment.github.io/endownment-remoteplayer-apt/>:
+<https://endownment.github.io/remoteplayer-apt/>:
 
 | Package | Source |
 |---|---|
@@ -16,9 +16,9 @@ newer) and `amd64`. One suite, `stable`, serves Debian 12 "bookworm" and 13
 
 ```sh
 sudo curl -fsSLo /usr/share/keyrings/remoteplayer-archive-keyring.gpg \
-    https://endownment.github.io/endownment-remoteplayer-apt/remoteplayer-archive-keyring.gpg
+    https://endownment.github.io/remoteplayer-apt/remoteplayer-archive-keyring.gpg
 sudo curl -fsSLo /etc/apt/sources.list.d/remoteplayer.sources \
-    https://endownment.github.io/endownment-remoteplayer-apt/remoteplayer.sources
+    https://endownment.github.io/remoteplayer-apt/remoteplayer.sources
 sudo apt update
 sudo apt install remoteplayer-restservice remoteplayer-mpvwatcher
 ```
@@ -86,7 +86,7 @@ hand (Actions → publish → Run workflow).
 3. **Release notification** (optional; without it new releases appear within
    a day). Create a fine-grained personal access token (GitHub → Settings →
    Developer settings → Fine-grained tokens) with access to
-   `endownment/endownment-remoteplayer-apt` only and the permission **Contents: Read and
+   `endownment/remoteplayer-apt` only and the permission **Contents: Read and
    write**. Add it as the secret `APT_REPOSITORY_TOKEN` to both source
    repositories.
 

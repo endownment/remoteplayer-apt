@@ -49,7 +49,7 @@ gpg --armor --export > remoteplayer-apt-public-key.asc
 
 ## 4. Положить секретный ключ в GitHub
 
-Репозиторий `endownment/endownment-remoteplayer-apt` → **Settings** →
+Репозиторий `endownment/remoteplayer-apt` → **Settings** →
 **Secrets and variables** → **Actions** → **New repository secret**:
 
 - Name: `APT_SIGNING_KEY`
@@ -58,7 +58,7 @@ gpg --armor --export > remoteplayer-apt-public-key.asc
   KEY BLOCK-----` и `-----END ...-----`.
 
 То же одной командой, если установлен GitHub CLI:
-`gh secret set APT_SIGNING_KEY --repo endownment/endownment-remoteplayer-apt < remoteplayer-apt-signing-key.asc`.
+`gh secret set APT_SIGNING_KEY --repo endownment/remoteplayer-apt < remoteplayer-apt-signing-key.asc`.
 
 GitHub хранит секрет зашифрованным. Прочитать его обратно нельзя, можно
 только заменить. Он доступен workflow этого репозитория и не попадает в
@@ -98,7 +98,7 @@ Source: **GitHub Actions**.
 ## 8. Первый запуск
 
 **Actions** → **publish** → **Run workflow**. Через пару минут откроется
-<https://endownment.github.io/endownment-remoteplayer-apt/>. Пока у проектов
+<https://endownment.github.io/remoteplayer-apt/>. Пока у проектов
 нет выпусков (тегов `vX.Y.Z`), репозиторий будет рабочим, но пустым.
 
 Если упал шаг «Import the signing key», значит секрет не задан или вставлен
@@ -124,7 +124,7 @@ gpg --show-keys /usr/share/keyrings/remoteplayer-archive-keyring.gpg
 1. GitHub → аватар → **Settings** → **Developer settings** → **Personal access
    tokens** → **Fine-grained tokens** → **Generate new token**.
 2. Repository access: **Only select repositories** →
-   `endownment/endownment-remoteplayer-apt`.
+   `endownment/remoteplayer-apt`.
 3. Permissions → Repository permissions → **Contents: Read and write**.
    Больше ничего не нужно.
 4. Expiration — на ваш вкус. Когда токен истечёт, выпуск не сломается: шаг
